@@ -1,0 +1,9 @@
+{
+    "db": {
+        "USER": "chhu1",
+        "PASS": "123456",
+        "HOST": "localhost",
+        "PORT": "",
+        "DATABASE": "bookServer"
+    }
+}
