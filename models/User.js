@@ -1,41 +1,45 @@
 module.exports = function(mongoose) {
-    var validator = require('../lib/validator'),
-        Schema = mongoose.Schema,
+    var Schema = mongoose.Schema,
         User;
 
     User = new Schema({
-        name: {
-            type: String,
-            required: false,
-            default: ""
+        userId: {
+            type: Number,
+            required: true,
         },
         username: {
             type: String,
-            validate: [validator({
-                length: {
-                    min: 3,
-                    max: 20
-                }
-            }), "username"],
             required: false,
-            default: "defaultusername"
-        },
-        password: {
-            type: String,
-            required: true
         },
         email: {
             type: String,
             required: true
         },
-        registerDate: {
+        password: {
+            type: String,
+            required: true
+        },
+        realname: {
+            type: String,
+            required: false,
+        },
+        phone: {
+            type: String,
+            required: false,
+        },
+        idCard: {
+            type: String,
+            required: false,
+        },
+        createdAt: {
             type: Date,
             required: true,
             default: Date.now
         },
-        loginDate: {
+        updatedAt: {
             type: Date,
-            required: false
+            required: false,
+            default: Date.now
         }
     });
     return mongoose.model('User', User);
