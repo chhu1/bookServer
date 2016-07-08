@@ -1,4 +1,5 @@
 var express = require('express'),
+    cors = require('cors'),
     http = require('http'),
     path = require('path'),
     mongoose = require('mongoose'),
@@ -23,6 +24,7 @@ app.configure('all', function() {
             url: utils.dbConnectionUrl(config.db)
         })
     }));
+    app.use(cors({ credentials: true }));
     app.use(express.bodyParser());
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });

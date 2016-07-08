@@ -1,30 +1,31 @@
 {
-    "name": "expressSimpleBookServer",
-    "description": "Simple BookServer Mongoose",
-    "author": "chao hu <1411365142@qq.com>",
-    "version": "1.0.0",
-    "private": false,
-    "scripts": {
-        "start": "node app"
-    },
-    "keywords": [
-        "express",
-        "mongoose",
-        "staticBook",
-        "bookServer"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/chhhu1/bookServer.git"
-    },
-    "license": "MIT",
-    "dependencies": {
-        "async": "0.1.22",
-        "config": "0.4.18",
-        "connect-mongo": "0.2.0",
-        "crypto": "0.0.3",
-        "devnull": "0.0.9",
-        "express": "3.0.3",
-        "mongoose": "3.4.0"
-    }
+  "name": "expressSimpleBookServer",
+  "description": "Simple BookServer Mongoose",
+  "author": "chao hu <1411365142@qq.com>",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "start": "node app"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "staticBook",
+    "bookServer"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chhhu1/bookServer.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "async": "0.1.22",
+    "config": "0.4.18",
+    "connect-mongo": "0.2.0",
+    "cors": "^2.7.1",
+    "crypto": "0.0.3",
+    "devnull": "0.0.9",
+    "express": "3.0.3",
+    "mongoose": "3.4.0"
+  }
 }

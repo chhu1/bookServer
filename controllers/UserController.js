@@ -9,6 +9,9 @@ UserController = function(app, mongoose, config) {
     var User = mongoose.model('User');
 
     app.post('/user/register.do?', function(req, res, next) {
+        res.setHeader("Access-Control-Allow-Credentials", true);
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:8001");
+        res.setHeader("Content-Type", "application/json");
         var email = req.body.email;
         var password = req.body.password;
         var userModel = new User();
@@ -24,7 +27,7 @@ UserController = function(app, mongoose, config) {
                     res.json({ status: 1, data: 'success' });
                 }
             })
-        })
+        });
     })
 }
 
