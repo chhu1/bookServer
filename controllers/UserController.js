@@ -1,16 +1,17 @@
 var util = require('util');
 var crypto = require('crypto');
+var mongoose = require('mongoose');
 
 var setId = require('../lib/ids');
-var validSession = require('./SessionController');
+var validToken = require('./tokenController');
+var tokenUtils = require('../lib/tokenUtils');
 var UtilController = require('./UtilController');
 var constant = require('../constant/constant');
 var validator = require('../lib/validator');
+var User = require('../models/User')(mongoose);
 
-UserController = function(app, mongoose, config) {
-    var User = mongoose.model('User');
-
-    app.post('/user/register.do', UtilController.preTreat, validSession, function(req, res, next) {
+var UserController = function(app, mongoose, config) {
+    app.post('/user/register.do', UtilController.preTreat, validToken, function(req, res, next) {
         var email = req.body.email;
         var password = req.body.password;
         if (!validator({ isEmail: true })(email)) {
@@ -49,9 +50,37 @@ UserController = function(app, mongoose, config) {
                 }
             }
         })
-    }, UtilController.errorHandler)
-}
+    }, UtilController.errorHandler);
 
-// req.session.user = password;
+    app.post('/user/login.do', UtilController.preTreat, validToken, function(req, res, next) {
+        var email = req.body.email;
+        var password = req.body.password;
+        if (!validator({ isEmail: true })(email)) {
+            res.json({ status: 0, errorMsg: constant.errorMsg['10001'], errorCode: 10001 })
+        }
+        if (!validator({ minLength: 6, maxLength: 16 })(password)) {
+            res.json({ status: 0, errorMsg: constant.errorMsg['10002'], errorCode: 10002 })
+        }
+        User.findOne({ email: email }, function(err, userInfo) {
+            if (err) {
+                req.resError = err;
+                next();
+            } else {
+                if (userInfo && crypto.createHash('md5').update(password).digest("hex") == userInfo.password) {
+                    res.json({
+                        status: 1,
+                        msg: '',
+                        data: {
+                            userId: userInfo.userId,
+                            token: tokenUtils.setToken(userInfo.userId)
+                        }
+                    });
+                } else {
+                    res.json({ status: 0, errorMsg: constant.errorMsg['10004'], errorCode: 10004 })
+                }
+            }
+        })
+    }, UtilController.errorHandler);
+}
 
 module.exports = UserController;

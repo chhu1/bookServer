@@ -26,6 +26,7 @@
     "crypto": "0.0.3",
     "devnull": "0.0.9",
     "express": "3.0.3",
+    "jwt-simple": "^0.5.0",
     "mongoose": "3.4.0"
   }
 }

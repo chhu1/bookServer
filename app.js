@@ -13,16 +13,6 @@ mongoose = utils.connectToDatabase(mongoose, config.db);
 app.configure('all', function() {
     app.set('port', 3000);
     app.use(express.cookieParser());
-    app.use(cors({ credentials: true }));
-    app.use(express.session({
-        secret: "golb",
-        resave: true,
-        saveUninitialized: false,
-        cookie: { maxAge: 24 * 60 * 60 * 1000 },
-        store: new mongoStore({
-            url: utils.dbConnectionUrl(config.db)
-        })
-    }));
     app.use(express.bodyParser());
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
