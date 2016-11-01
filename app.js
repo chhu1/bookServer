@@ -18,8 +18,9 @@ app.configure('all', function() {
 });
 
 require('./models/User')(mongoose);
+require('./models/Book')(mongoose);
 
-['User'].forEach(function(controller) {
+['User', 'Book'].forEach(function(controller) {
     require('./controllers/' + controller + 'Controller')(app, mongoose, config);
 });
 

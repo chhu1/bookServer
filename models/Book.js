@@ -1,33 +1,41 @@
 module.exports = function(mongoose) {
     var Schema = mongoose.Schema,
-        User = new Schema({
+        Book = new Schema({
+            bookId: {
+                type: Number,
+                required: true
+            },
+            name: {
+                type: String,
+                required: true
+            },
+            desc: {
+                type: String,
+                required: true
+            },
             userId: {
                 type: Number,
                 required: true
             },
-            username: {
+            categoryId: {
+                type: Number,
+                required: true
+            },
+            thumb: {
                 type: String,
                 required: false
             },
-            email: {
+            image: {
+                type: String,
+                required: false
+            },
+            author: {
                 type: String,
                 required: true
             },
-            password: {
+            company: {
                 type: String,
                 required: true
-            },
-            realname: {
-                type: String,
-                required: false
-            },
-            phone: {
-                type: String,
-                required: false
-            },
-            idCard: {
-                type: String,
-                required: false
             },
             createdAt: {
                 type: Date,
@@ -40,5 +48,5 @@ module.exports = function(mongoose) {
                 default: Date.now
             }
         });
-    return mongoose.model('User', User);
+    return mongoose.model('Book', Book);
 }
