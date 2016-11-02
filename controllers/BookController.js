@@ -9,7 +9,7 @@ var Book = require('../models/Book')(mongoose);
 
 var BookController = function(app, mongoose, config) {
     app.get('/book/list.do', UtilController.preTreat, validToken, function(req, res, next) {
-        var userId = url.parse(req.url, true).query.userId,
+        var userId = url.parse(req.url, true).query.queryUser,
             userObj = userId ? { userId: userId } : {};
         Book.find(userObj, function(err, bookInfo) {
             if (err) {
