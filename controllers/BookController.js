@@ -4,14 +4,22 @@ var mongoose = require('mongoose');
 
 var validToken = require('./tokenController');
 var tokenUtils = require('../lib/tokenUtils');
+var constant = require('../constant/constant');
 var UtilController = require('./UtilController');
 var Book = require('../models/Book')(mongoose);
 
 var BookController = function(app, mongoose, config) {
     app.get('/book/list.do', UtilController.preTreat, validToken, function(req, res, next) {
-        var userId = url.parse(req.url, true).query.queryUser,
-            userObj = userId ? { userId: userId } : {};
-        Book.find(userObj, function(err, bookInfo) {
+        var query = url.parse(req.url, true).query,
+            pageNumber = query.pageNumber,
+            pageSize = query.pageSize ? query.pageSize : 10,
+            userObj = query.userId ? { userId: query.userId } : {};
+        if (pageNumber === undefined) {
+            res.json({ status: 0, errorMsg: constant.errorMsg['10005'], errorCode: 10005 })
+        } else {
+            var skipNumber = pageNumber * pageSize;
+        }
+        Book.find(userObj).sort({ bookId: 'asc' }).skip(skipNumber).limit(pageSize).exec(function(err, bookInfo) {
             if (err) {
                 req.resError = err;
                 next();
@@ -24,7 +32,7 @@ var BookController = function(app, mongoose, config) {
                     }
                 });
             }
-        })
+        });
     }, UtilController.errorHandler);
 
     // category
