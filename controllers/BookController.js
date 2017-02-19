@@ -17,7 +17,7 @@ var BookController = function(app, mongoose, config) {
         if (pageNumber === undefined) {
             res.json({ status: 0, errorMsg: constant.errorMsg['10005'], errorCode: 10005 })
         } else {
-            var skipNumber = pageNumber * pageSize;
+            var skipNumber = (pageNumber - 1) * pageSize;
         }
         Book.find(userObj).sort({ bookId: 'asc' }).skip(skipNumber).limit(pageSize).exec(function(err, bookInfo) {
             if (err) {

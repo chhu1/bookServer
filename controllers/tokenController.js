@@ -10,7 +10,7 @@ module.exports = function validToken(req, res, next) {
     var userId = (req.body && req.body.userId) || parsedUrl.query.userId;
     if (token && userId) {
         var decoded = tokenUtils.getToken(token);
-        if (decoded.exp <= Date.now() || decoded.iss != userId) {
+        if (!decoded || decoded.exp <= Date.now() || decoded.iss != userId) {
             res.json({ status: 0, errorMsg: constant.errorMsg['10000'], errorCode: 10000 });
         } else {
             User.findOne({ 'userId': decoded.iss }, function(err, user) {
