@@ -7,6 +7,11 @@ var tokenUtils = require('../lib/tokenUtils');
 var constant = require('../constant/constant');
 var UtilController = require('./UtilController');
 var Book = require('../models/Book')(mongoose);
+var validator = require('../lib/validator');
+
+function validBookParams(params) {
+    return validator({ minLength: 6 })(params.desc) && validator({ minLength: 6, maxLength: 30 })(params.name) && validator({ minLength: 2, maxLength: 20 })(params.author) && validator({ minLength: 2, maxLength: 20 })(params.company) && validator({ inArray: [1, 2] })(params.categoryId)
+}
 
 var BookController = function(app, mongoose, config) {
     app.get('/book/list.do', UtilController.preTreat, validToken, function(req, res, next) {
@@ -35,34 +40,34 @@ var BookController = function(app, mongoose, config) {
         });
     }, UtilController.errorHandler);
 
-    // category
-    //  1: 小说
-    //  2: 经济学
-    // app.get('/book/set.do', UtilController.preTreat, function(req, res, next) {
-    //     var bookModel = new Book();
-    //     bookModel.name = '让数字说话：审计，就这么简单';
-    //     bookModel.desc = '全新修订7万字，豆瓣评分9.0，影响了无数“四大”人的专业奇书！张连起、冯定豪、武卫、吴溪、莫小莫等业内大咖鼎力推荐';
-    //     bookModel.userId = 1000002;
-    //     bookModel.categoryId = 2;
-    //     bookModel.author = '孙含晖';
-    //     bookModel.company = '机械工业出版社';
-    //     setId('bookId', function(err, id) {
-    //         if (err) {
-    //             req.resError = err;
-    //             next();
-    //         } else {
-    //             bookModel.bookId = id;
-    //             bookModel.save(function(err) {
-    //                 if (err) {
-    //                     req.resError = err;
-    //                     next();
-    //                 } else {
-    //                     res.json({ status: 1, msg: '', data: {} });
-    //                 }
-    //             })
-    //         }
-    //     })
-    // }, UtilController.errorHandler);
+    app.post('/book/set.do', UtilController.preTreat, validToken, function(req, res, next) {
+        var body = req.body,
+            bookModel = new Book();
+        if (validBookParams(body)) {
+            bookModel.desc = body.desc;
+            bookModel.name = body.name;
+            bookModel.userId = body.userId;
+            bookModel.author = body.author;
+            bookModel.company = body.company;
+            bookModel.categoryId = body.categoryId;
+        }
+        setId('bookId', function(err, id) {
+            if (err) {
+                req.resError = err;
+                next();
+            } else {
+                bookModel.bookId = id;
+                bookModel.save(function(err) {
+                    if (err) {
+                        req.resError = err;
+                        next();
+                    } else {
+                        res.json({ status: 1, msg: '', data: {} });
+                    }
+                })
+            }
+        })
+    }, UtilController.errorHandler);
 }
 
 module.exports = BookController;

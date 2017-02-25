@@ -17,6 +17,9 @@ module.exports = function(mongoose) {
                 type: Number,
                 required: true
             },
+            /*categoryId
+            1: 小说
+            2: 经济学*/
             categoryId: {
                 type: Number,
                 required: true
