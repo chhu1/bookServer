@@ -15,10 +15,10 @@ var UserController = function(app, mongoose, config) {
         var email = req.body.email;
         var password = req.body.password;
         if (!validator({ isEmail: true })(email)) {
-            res.json({ status: 0, errorMsg: constant.errorMsg['10001'], errorCode: 10001 })
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10001'], errorCode: 10001 })
         }
         if (!validator({ minLength: 6, maxLength: 16 })(password)) {
-            res.json({ status: 0, errorMsg: constant.errorMsg['10002'], errorCode: 10002 })
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10002'], errorCode: 10002 })
         }
         User.findOne({ email: email }, function(err, userInfo) {
             if (err) {
@@ -26,7 +26,7 @@ var UserController = function(app, mongoose, config) {
                 next();
             } else {
                 if (userInfo) {
-                    res.json({ status: 0, errorMsg: constant.errorMsg['10003'], errorCode: 10003 })
+                    return res.json({ status: 0, errorMsg: constant.errorMsg['10003'], errorCode: 10003 })
                 } else {
                     var userModel = new User();
                     userModel.email = email;
@@ -56,10 +56,10 @@ var UserController = function(app, mongoose, config) {
         var email = req.body.email;
         var password = req.body.password;
         if (!validator({ isEmail: true })(email)) {
-            res.json({ status: 0, errorMsg: constant.errorMsg['10001'], errorCode: 10001 })
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10001'], errorCode: 10001 })
         }
         if (!validator({ minLength: 6, maxLength: 16 })(password)) {
-            res.json({ status: 0, errorMsg: constant.errorMsg['10002'], errorCode: 10002 })
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10002'], errorCode: 10002 })
         }
         User.findOne({ email: email }, function(err, userInfo) {
             if (err) {

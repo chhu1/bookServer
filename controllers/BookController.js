@@ -20,7 +20,7 @@ var BookController = function(app, mongoose, config) {
             pageSize = query.pageSize ? query.pageSize : 10,
             userObj = query.userId ? { userId: query.userId } : {};
         if (pageNumber === undefined) {
-            res.json({ status: 0, errorMsg: constant.errorMsg['10005'], errorCode: 10005 })
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10005'], errorCode: 10005 })
         } else {
             var skipNumber = (pageNumber - 1) * pageSize;
         }
@@ -40,7 +40,7 @@ var BookController = function(app, mongoose, config) {
         });
     }, UtilController.errorHandler);
 
-    app.post('/book/set.do', UtilController.preTreat, validToken, function(req, res, next) {
+    app.post('/book/add.do', UtilController.preTreat, validToken, function(req, res, next) {
         var body = req.body,
             bookModel = new Book();
         if (validBookParams(body)) {
@@ -50,6 +50,8 @@ var BookController = function(app, mongoose, config) {
             bookModel.author = body.author;
             bookModel.company = body.company;
             bookModel.categoryId = body.categoryId;
+        } else {
+            return res.json({ status: 0, errorMsg: constant.errorMsg['10006'], errorCode: 10006 })
         }
         setId('bookId', function(err, id) {
             if (err) {
